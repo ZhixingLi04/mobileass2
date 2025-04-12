@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MedicationViewModel(application: Application) : AndroidViewModel(application) {
-    // 创建数据库实例，添加 fallbackToDestructiveMigration() 以消除版本迁移异常
+    // Create the database instance and add fallbackToDestructiveMigration() to eliminate migration exceptions
     private val database = Room.databaseBuilder(
         application,
         AppDatabase::class.java,

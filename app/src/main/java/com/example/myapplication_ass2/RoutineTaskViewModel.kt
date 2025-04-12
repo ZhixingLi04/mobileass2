@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class RoutineTaskViewModel(application: Application) : AndroidViewModel(application) {
-    // 构建数据库实例，添加 fallbackToDestructiveMigration() 来解决版本升级问题
+    // To build a database instance, add fallbackToDestructiveMigration () to solve the problem of version upgrade
     private val database = Room.databaseBuilder(
         application,
         AppDatabase::class.java,

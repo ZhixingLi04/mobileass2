@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MessageViewModel(application: Application) : AndroidViewModel(application) {
-    // 构建数据库实例，添加 fallbackToDestructiveMigration() 消除版本升级问题
+    // Build the database instance and add fallbackToDestructiveMigration() to solve version upgrade issues
     private val database = Room.databaseBuilder(
         application,
         AppDatabase::class.java,

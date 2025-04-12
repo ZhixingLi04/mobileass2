@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 
 class DrugRepository(private val api: DrugApiService) {
 
-    // 修改返回类型为 Result<List<DrugInfo>>
+
     suspend fun fetchDrugInfo(name: String): Result<List<DrugInfo>> {
         return try {
             val response = withContext(Dispatchers.IO) {

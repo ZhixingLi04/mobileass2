@@ -38,9 +38,9 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             val settingsViewModel: AppSettingsViewModel = viewModel()
 
-            // checkedStates 此变量之前用于 MedicationScreen，不再传递给 MedicationScreen
+            // checkedStates: This variable was previously used for MedicationScreen, but is no longer passed to MedicationScreen
             val checkedStates = remember { mutableStateListOf(false, false, false, false) }
-            // 将任务列表类型修改为 RoutineTaskEntity（不是 RoutineTask）
+            // Change the task list type to RoutineTaskEntity (not RoutineTask)
             val routineTasks = remember { mutableStateListOf<RoutineTaskEntity>() }
             val doctorRoutineTasks = remember {
                 mutableStateListOf(
@@ -90,14 +90,14 @@ fun NavHostContainer(
             SettingsScreen(navController, settingsViewModel)
         }
         composable("medication") {
-            // MedicationScreen 内部通过 viewModel 获取 MedicationViewModel
+            // MedicationScreen obtains MedicationViewModel internally via viewModel
             MedicationScreen(navController)
         }
         composable("daily_routine") {
-            // DailyRoutineScreen 使用内部的 ViewModel 加载数据
+            // DailyRoutineScreen loads data using its internal ViewModel
             DailyRoutineScreen(navController)
         }
-        // 新增 Medical Advice 页面（原 Appointments 已经移除）
+        // Added Medical Advice page (the original Appointments page has been removed)
         composable("medical_advice") {
             MedicalAdviceScreen(navController)
         }
@@ -178,7 +178,7 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 更新导航菜单，将 "Appointments List" 改为 "Medical Advice"
+            // Update the navigation menu: change "Appointments List" to "Medical Advice"
             val options = listOf(
                 Triple("Medication Schedule", "medication", Icons.Default.MedicalServices),
                 Triple("Daily Routine Schedule", "daily_routine", Icons.Default.List),

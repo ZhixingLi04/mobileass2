@@ -30,10 +30,10 @@ fun MedicalAdviceScreen(
     val drugInfo by medicalAdviceViewModel.drugInfo.collectAsState()
     val error by medicalAdviceViewModel.error.collectAsState()
 
-    // 使用 Scaffold，将底部按钮固定在 bottomBar 中
+    // Use Scaffold to fix the bottom button in the bottomBar
     Scaffold(
         bottomBar = {
-            // 外层加上适当的 padding
+            // Add appropriate padding in the outer layer
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -54,7 +54,7 @@ fun MedicalAdviceScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            // 背景图片
+            // Background image
             Image(
                 painter = painterResource(id = R.drawable.b),
                 contentDescription = null,
@@ -62,7 +62,7 @@ fun MedicalAdviceScreen(
                 alpha = 0.2f
             )
 
-            // 主体内容使用 verticalScroll 包裹，确保内容过多时能滚动查看
+            // Wrap the main content with verticalScroll to allow scrolling when content overflows
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -102,7 +102,7 @@ fun MedicalAdviceScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // 显示药物信息（成功），遍历列表并显示每个药物的详细信息
+                // Display medication information (success); iterate through the list and show details for each medication
                 drugInfo?.let { infos ->
                     Column(
                         modifier = Modifier
@@ -122,7 +122,7 @@ fun MedicalAdviceScreen(
                     }
                 }
 
-                // 显示错误信息（失败）
+                // Display error message (failure)
                 error?.let {
                     Text(
                         text = "Error: $it",
@@ -131,7 +131,7 @@ fun MedicalAdviceScreen(
                     )
                 }
 
-                // 添加额外的 Spacer，确保滚动内容下部与 bottomBar 有间距
+                // Add extra Spacer to ensure there is spacing between the bottom of the scrollable content and the bottomBar
                 Spacer(modifier = Modifier.height(64.dp))
             }
         }

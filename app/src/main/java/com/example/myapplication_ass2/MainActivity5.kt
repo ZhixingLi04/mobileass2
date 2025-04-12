@@ -1,18 +1,14 @@
 package com.example.myapplication_ass2
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,50 +17,39 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.myapplication_ass2.ui.theme.MyApplication_ass2Theme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
-
-class MainActivity5 : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            MyApplication_ass2Theme {
-                val navController = rememberNavController()
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    FamilyCommunicationScreen(
-                        navController = navController,
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun FamilyCommunicationScreen(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    // 通过 Room 加载消息记录
+    // 获取全局 AppSettingsViewModel，从中读取 dark mode 状态
+    val settingsViewModel: AppSettingsViewModel = viewModel()
+    val isDarkMode = settingsViewModel.isDarkMode.value
+    // 根据 dark mode 状态决定背景色，打开时使用黑色，否则使用白色
+    val backgroundColor = if (isDarkMode) Color.Black else Color.White
+    // 为了确保文字在黑色背景下可见，这里将文字颜色设置为白色
+    val contentColor = if (isDarkMode) Color.White else Color.Black
+
+    // 获取 MessageViewModel 实例，使用 collectAsState 替换 collectAsStateWithLifecycle
     val messageViewModel: MessageViewModel = viewModel()
-    val messages by messageViewModel.messages.collectAsStateWithLifecycle(emptyList())
+    val messages by messageViewModel.messages.collectAsState(emptyList())
     var inputText by remember { mutableStateOf(TextFieldValue("")) }
 
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(backgroundColor)
             .padding(16.dp)
     ) {
         Text(
             text = "Family Communication",
             style = MaterialTheme.typography.headlineMedium,
+            color = contentColor,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(bottom = 12.dp)
@@ -73,7 +58,6 @@ fun FamilyCommunicationScreen(
         Divider(color = Color.Gray.copy(alpha = 0.3f))
         Spacer(modifier = Modifier.height(8.dp))
 
-        // 使用 LazyColumn 展示消息，reverseLayout 实现最新消息在上方
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
@@ -81,10 +65,12 @@ fun FamilyCommunicationScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             reverseLayout = true
         ) {
+            // 这里假设 message 对象具有 sender 和 text 属性
             items(messages) { message ->
                 ChatBubble(
                     sender = message.sender,
-                    text = message.text
+                    text = message.text,
+                    contentColor = contentColor
                 )
             }
         }
@@ -114,7 +100,6 @@ fun FamilyCommunicationScreen(
                 onClick = {
                     val text = inputText.text.trim()
                     if (text.isNotEmpty()) {
-                        // 通过 ViewModel 添加新消息，存入 Room 数据库中
                         messageViewModel.addMessage("Me", text)
                         inputText = TextFieldValue("")
                     }
@@ -124,7 +109,7 @@ fun FamilyCommunicationScreen(
                     .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(24.dp))
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Send, // 修复此处
+                    imageVector = Icons.Filled.Send,
                     contentDescription = "Send",
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
@@ -145,7 +130,7 @@ fun FamilyCommunicationScreen(
 }
 
 @Composable
-fun ChatBubble(sender: String, text: String) {
+fun ChatBubble(sender: String, text: String, contentColor: Color) {
     val isMe = sender == "Me"
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -169,7 +154,7 @@ fun ChatBubble(sender: String, text: String) {
             }
             Text(
                 text = text,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium.copy(color = contentColor)
             )
         }
     }

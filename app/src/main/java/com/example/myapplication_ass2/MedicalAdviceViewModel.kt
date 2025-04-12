@@ -12,7 +12,7 @@ class MedicalAdviceViewModel : ViewModel() {
 
     private val repository = DrugContainer.repository
 
-    // 修改 _drugInfo 类型为 List<DrugInfo>?，初始值 null
+    //Change the _drugInfo type to List<DrugInfo>? , the initial value is null
     private val _drugInfo = MutableStateFlow<List<DrugInfo>?>(null)
     val drugInfo: StateFlow<List<DrugInfo>?> = _drugInfo
 

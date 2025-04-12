@@ -5,4 +5,5 @@ import androidx.lifecycle.ViewModel
 
 class AppSettingsViewModel : ViewModel() {
     var fontSize = mutableStateOf(16f)
+    var isDarkMode = mutableStateOf(false)
 }
