@@ -34,17 +34,17 @@ fun MedicationScreen(
     navController: NavController,
     medicationViewModel: MedicationViewModel = viewModel()
 ) {
-    // 获取数据库中的药物记录
+    // Obtain medication records from the database
     val medications by medicationViewModel.medications.collectAsStateWithLifecycle()
-    // 控制添加药物对话框显示状态
+    // Control the display status of the Add Medication dialog
     var showDialog by remember { mutableStateOf(false) }
 
-    // 计算待服用和已服用的药物
+    // Count the medications to be taken and the medications already taken
     val pendingMedications = medications.filter { !it.taken }
     val takenMedications = medications.filter { it.taken }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // 背景图片
+        // Background image
         Image(
             painter = painterResource(id = R.drawable.b),
             contentDescription = null,
@@ -60,7 +60,7 @@ fun MedicationScreen(
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // 标题
+            // Title
             item {
                 Text(
                     text = "Medication Schedule",
@@ -71,7 +71,7 @@ fun MedicationScreen(
                 )
             }
 
-            // 待服用药物部分（显示“Done”按钮）
+            // Section for medications to be taken (shows "Done" button)
             if (pendingMedications.isNotEmpty()) {
                 item {
                     Text(
@@ -93,7 +93,7 @@ fun MedicationScreen(
                 }
             }
 
-            // 已服用药物部分（详细显示药物信息）
+            // Section for medications already taken (shows detailed medication information)
             if (takenMedications.isNotEmpty()) {
                 item {
                     Text(
@@ -106,7 +106,7 @@ fun MedicationScreen(
                 }
             }
 
-            // 进度条显示任务完成比例
+            // The progress bar shows the percentage of tasks completed (modified part: increased font size and changed the progress bar color to red)
             item {
                 val totalCount = medications.size
                 val doneCount = takenMedications.size
@@ -114,17 +114,18 @@ fun MedicationScreen(
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "Progress: ${(progress * 100).toInt()}%",
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 20.sp)
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     LinearProgressIndicator(
                         progress = progress,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.Red
                     )
                 }
             }
 
-            // “Back to Home” 按钮放在列表末尾
+            // "Back to Home" button
             item {
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
@@ -146,7 +147,7 @@ fun MedicationScreen(
             }
         }
 
-        // 页面右下角悬浮按钮，点击后显示添加药物对话框
+        // Floating action button at the bottom right; click to show the Add Medication dialog
         FloatingActionButton(
             onClick = { showDialog = true },
             modifier = Modifier
@@ -156,7 +157,7 @@ fun MedicationScreen(
             Icon(Icons.Filled.Add, contentDescription = "Add Medication")
         }
 
-        // 显示添加药物的对话框
+        // Display the Add Medication dialog
         if (showDialog) {
             AddMedicationDialog(
                 onAdd = { name: String, dosage: String, time: String ->
