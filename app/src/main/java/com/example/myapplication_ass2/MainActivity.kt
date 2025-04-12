@@ -23,8 +23,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-// 注意：删除错误的 Message 导入
-// import androidx.datastore.core.Message
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
@@ -39,9 +37,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val settingsViewModel: AppSettingsViewModel = viewModel()
-
-            // 不再需要 chatMessages（FamilyCommunicationScreen 内部用 MessageViewModel 加载数据）
-            // 例如：val chatMessages = remember { mutableStateListOf(...)} // 删除该变量
 
             // checkedStates 此变量之前用于 MedicationScreen，不再传递给 MedicationScreen
             val checkedStates = remember { mutableStateListOf(false, false, false, false) }
@@ -83,12 +78,11 @@ class MainActivity : ComponentActivity() {
 fun NavHostContainer(
     navController: NavHostController,
     settingsViewModel: AppSettingsViewModel,
-    // 注意：routineTasks 类型为 RoutineTaskEntity
     routineTasks: MutableList<RoutineTaskEntity>,
     doctorRoutineTasks: MutableList<String>,
     modifier: Modifier = Modifier
 ) {
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "home", modifier = modifier) {
         composable("home") {
             HomeScreen(navController, settingsViewModel)
         }
@@ -96,19 +90,18 @@ fun NavHostContainer(
             SettingsScreen(navController, settingsViewModel)
         }
         composable("medication") {
-            // 只传入 navController，MedicationScreen 内部通过 viewModel 获取 MedicationViewModel
+            // MedicationScreen 内部通过 viewModel 获取 MedicationViewModel
             MedicationScreen(navController)
         }
         composable("daily_routine") {
-            // 修改为不传入额外任务列表，使用 DailyRoutineScreen 的默认 viewModel 获取数据
+            // DailyRoutineScreen 使用内部的 ViewModel 加载数据
             DailyRoutineScreen(navController)
         }
-        composable("appointments") {
-            // 同样用 DailyRoutineScreen 作为占位屏，不传入 doctorRoutineTasks
-            DailyRoutineScreen(navController)
+        // 新增 Medical Advice 页面（原 Appointments 已经移除）
+        composable("medical_advice") {
+            MedicalAdviceScreen(navController)
         }
         composable("communication") {
-            // FamilyCommunicationScreen 内部通过 MessageViewModel 获取消息
             FamilyCommunicationScreen(navController)
         }
     }
@@ -185,10 +178,11 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // 更新导航菜单，将 "Appointments List" 改为 "Medical Advice"
             val options = listOf(
                 Triple("Medication Schedule", "medication", Icons.Default.MedicalServices),
                 Triple("Daily Routine Schedule", "daily_routine", Icons.Default.List),
-                Triple("Appointments List", "appointments", Icons.Default.DateRange),
+                Triple("Medical Advice", "medical_advice", Icons.Default.Info),
                 Triple("Family Communication", "communication", Icons.Default.Phone),
                 Triple("App Settings", "settings", Icons.Default.Settings)
             )
