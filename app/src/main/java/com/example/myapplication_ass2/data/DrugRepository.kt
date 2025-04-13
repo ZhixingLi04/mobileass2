@@ -2,18 +2,12 @@ package com.example.myapplication_ass2.repository
 
 import com.example.myapplication_ass2.network.DrugApiService
 import com.example.myapplication_ass2.network.DrugInfo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
-class DrugRepository(private val api: DrugApiService) {
-
-
-    suspend fun fetchDrugInfo(name: String): Result<List<DrugInfo>> {
+open class DrugRepository(private val apiService: DrugApiService) {
+    open suspend fun fetchDrugInfo(name: String): Result<List<DrugInfo>> {
         return try {
-            val response = withContext(Dispatchers.IO) {
-                api.getDrugInfo(name)
-            }
-            Result.success(response)
+            val info = apiService.getDrugInfo(name)
+            Result.success(info)
         } catch (e: Exception) {
             Result.failure(e)
         }
