@@ -1,0 +1,56 @@
+Elderly Care App
+Author: Li Zhixing 14647947
+
+Background Purpose: This application is an intelligent nursing management tool designed for the elderly, aiming to help the elderly and their families to better manage daily life and communicate with medical care.
+
+Function module
+
+1. Home Page (Home)
+
+Interface features: The interface uses a simple and clear design, menu items are clearly displayed in the form of rounded cards, and have a soft gradient background.
+Functional navigation: Navigation buttons for five main modules, each with intuitive ICONS, are easy for older users to operate:
+（1）Medication Schedule
+（2）Daily Routine Schedule
+（3）Medical Advice
+（4）Family Communication
+（5）App Settings
+
+2. Medication Schedule
+
+Medication records: Record the drugs to be taken and the drugs taken, and display them separately.
+Progress tracking: Displays the medication completion progress (percentage) of the day, with a progress bar in bold red.
+Drug addition: The user can add the drug name, dosage and time of taking the drug through the floating button (round).
+Reminder function: Each drug to be taken provides a "finish" button (rounded rectangular design), which is marked as having taken the drug after being clicked.
+Data persistence: Drug records are automatically saved to a local database.
+
+3. Daily Routine Schedule
+
+Task Management: Users can add, view, and delete daily active tasks.
+Data persistence: Active tasks are automatically saved to the local database.
+
+4. Medical Advice
+
+Drug information query: Users can enter the name of the drug to receive detailed medical advice, including the drug description, dosage and possible side effects. Using apis, you can search for drugs and other information from outside websites.
+Error message: If the query fails, an error message is displayed.
+Background decoration: The background of the page is equipped with elegant medical theme pictures to enhance visual comfort.
+
+5. Family Communication
+
+Real-time chat: Provide real-time family communication chat room, support message sending and receiving, message bubbles with rounded design.
+Message logs: Chat logs are permanently stored in a local database.
+Interface adaptation: Support dark mode switching, provide clear visual effects, background color and text color contrast clear.
+
+6. Application Settings
+
+Font size adjustment: Users can freely adjust the font size of the application interface.
+Dark Mode: Provides the option to switch on and off dark mode to improve the visual experience.
+Notification switch: Allows users to turn on or off app notifications.
+One-click call: provides emergency call function, the button is highlighted with bright colors, and you can immediately jump to the family communication page after clicking.
+
+Technical architecture：
+Development language and framework: Kotlin + Jetpack Compose
+Database management: Room Database, support data persistence
+
+Architecture pattern: The MVVM architecture is used to clearly separate the View, ViewModel and data Repository.
+
+Dependency Injection: Use Hilt for dependency injection to ensure component decoupling and ease of testing.

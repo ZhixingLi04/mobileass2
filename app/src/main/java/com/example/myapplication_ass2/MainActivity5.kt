@@ -27,15 +27,14 @@ fun FamilyCommunicationScreen(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    // 获取全局 AppSettingsViewModel，从中读取 dark mode 状态
+
     val settingsViewModel: AppSettingsViewModel = viewModel()
     val isDarkMode = settingsViewModel.isDarkMode.value
-    // 根据 dark mode 状态决定背景色，打开时使用黑色，否则使用白色
+
     val backgroundColor = if (isDarkMode) Color.Black else Color.White
-    // 为了确保文字在黑色背景下可见，这里将文字颜色设置为白色
+
     val contentColor = if (isDarkMode) Color.White else Color.Black
 
-    // 获取 MessageViewModel 实例，使用 collectAsState 替换 collectAsStateWithLifecycle
     val messageViewModel: MessageViewModel = viewModel()
     val messages by messageViewModel.messages.collectAsState(emptyList())
     var inputText by remember { mutableStateOf(TextFieldValue("")) }
@@ -65,7 +64,6 @@ fun FamilyCommunicationScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             reverseLayout = true
         ) {
-            // 这里假设 message 对象具有 sender 和 text 属性
             items(messages) { message ->
                 ChatBubble(
                     sender = message.sender,
