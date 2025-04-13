@@ -54,3 +54,6 @@ Database management: Room Database, support data persistence
 Architecture pattern: The MVVM architecture is used to clearly separate the View, ViewModel and data Repository.
 
 Dependency Injection: Use Hilt for dependency injection to ensure component decoupling and ease of testing.
+
+Testing:
+The application includes comprehensive unit tests for all core ViewModel modules using the JUnit and Robolectric frameworks. The tests cover medication record insertion and updates, task management operations, settings adjustments, and network-based drug information queries. All tests utilize in-memory databases to ensure test isolation, reliability, and stability.
